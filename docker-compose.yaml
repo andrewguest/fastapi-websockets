@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  websocket-api:
+    build: .
+    ports:
+      - 8001:8001
+    networks:
+      - projects
+    command: poetry run gunicorn
+    container_name: websocket-api
+
+networks:
+  projects:
+    external: true
