@@ -10,7 +10,8 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    # Set Poetry to NOT install the dependencies into a virtual environment, instead install them into the system's Python environment
+    POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1 \
     PYTHONPATH=${PYTHONPATH}:${PWD}
 
@@ -30,19 +31,20 @@ RUN chown -R app:app /app
 # Install Poetry
 RUN pip3 install poetry
 
-# Export the Poetry pack list to another format
-RUN poetry export -f requirements.txt >> requirements.txt
-
 # Set Poetry to NOT install the dependencies into a virtual environment, instead install them into the system's Python environment
 RUN poetry config virtualenvs.create false
+
+# Export the Poetry pack list to another format
+RUN poetry export -f requirements.txt > requirements.txt
 
 # Install the Python dependencies
 RUN poetry install --only main
 
 # Become the `app` user
-USER app
+#USER app
 
 # Expose port 8001 on the container
 EXPOSE 8001
 
-CMD ["poetry", "run", "gunicorn"]
+#CMD ["poetry", "run", "gunicorn"]
+CMD ["gunicorn"]

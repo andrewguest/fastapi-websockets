@@ -7,7 +7,7 @@ services:
       - 8001
     networks:
       - projects
-    command: poetry run gunicorn
+    command: gunicorn
     container_name: websocket-api
 
 networks:
