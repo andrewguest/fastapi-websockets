@@ -9,6 +9,7 @@ services:
       - projects
     command: gunicorn
     container_name: websocket-api
+    restart: unless-stopped
 
 networks:
   projects:
